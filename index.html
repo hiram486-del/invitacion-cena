@@ -6,30 +6,52 @@
   <title>Cena Contigo ❤️</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #ffe6eb;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
       text-align: center;
-      padding: 50px;
+      padding: 40px;
+      overflow: hidden;
+      height: 100vh;
     }
+
     h1 {
-      color: #d6336c;
+      color: #fff;
+      font-size: 28px;
+      margin-bottom: 50px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
+
     .btn {
-      padding: 15px 25px;
+      padding: 15px 30px;
       font-size: 20px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       margin: 15px;
       transition: all 0.3s ease;
     }
+
     .yes {
       background: #ff4d6d;
       color: white;
     }
+
     .no {
-      background: #adb5bd;
+      background: #444;
       color: white;
+    }
+
+    /* corazones flotando */
+    .heart {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(1); opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
     }
   </style>
 </head>
@@ -43,16 +65,8 @@
     let yesBtn = document.getElementById("yesBtn");
     let noBtn = document.getElementById("noBtn");
     let yesSize = 1;
+    let noSize = 1;
 
     noBtn.addEventListener("click", () => {
-      yesSize += 0.3; // cada que presione NO, el botón SÍ crece
-      yesBtn.style.transform = `scale(${yesSize})`;
-    });
-
-    yesBtn.addEventListener("click", () => {
-      // Aquí puedes poner el link a una foto de ustedes
-      window.location.href = "https://tulink.com/foto-juntos.jpg";
-    });
-  </script>
-</body>
-</html>
+      yesSize += 0.3; // el SÍ se agranda
+      noSize -= 0.2;  // el NO
