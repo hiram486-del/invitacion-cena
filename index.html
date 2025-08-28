@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cena Contigo ❤️</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffe6eb;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #d6336c;
+    }
+    .btn {
+      padding: 15px 25px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 15px;
+      transition: all 0.3s ease;
+    }
+    .yes {
+      background: #ff4d6d;
+      color: white;
+    }
+    .no {
+      background: #adb5bd;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>¿Quieres ir a cenar conmigo? ❤️</h1>
+  
+  <button class="btn yes" id="yesBtn">Sí 🥰</button>
+  <button class="btn no" id="noBtn">No 😢</button>
+
+  <script>
+    let yesBtn = document.getElementById("yesBtn");
+    let noBtn = document.getElementById("noBtn");
+    let yesSize = 1;
+
+    noBtn.addEventListener("click", () => {
+      yesSize += 0.3; // cada que presione NO, el botón SÍ crece
+      yesBtn.style.transform = `scale(${yesSize})`;
+    });
+
+    yesBtn.addEventListener("click", () => {
+      // Aquí puedes poner el link a una foto de ustedes
+      window.location.href = "https://tulink.com/foto-juntos.jpg";
+    });
+  </script>
+</body>
+</html>
