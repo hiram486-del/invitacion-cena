@@ -1,98 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flyer Romántico</title>
-<style>
-  body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #ffe6e6;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-    position: relative;
-    margin: 0;
-  }
-  button {
-    padding: 15px 30px;
-    margin: 20px;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 10px;
-    border: none;
-    position: absolute;
-    transition: all 0.2s;
-  }
-  #si {
-    background-color: #ff4d4d;
-    color: white;
-    left: 50%;
-    top: 60%;
-    transform: translate(-50%, -50%) scale(1);
-    position: fixed;
-    z-index: 10;
-  }
-  #no {
-    background-color: #ccc;
-    color: black;
-    left: 50%;
-    top: 40%;
-    transform: translate(-50%, -50%);
-    z-index: 5;
-  }
-  img {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 90%;
-    max-height: 90%;
-    display: none;
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cena Contigo ❤️</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
+      text-align: center;
+      padding: 40px;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    h1 {
+      color: #fff;
+      font-size: 28px;
+      margin-bottom: 50px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .btn {
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin: 15px;
+      transition: transform 0.3s ease, font-size 0.3s ease;
+    }
+
+    .yes {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    .no {
+      background: #444;
+      color: white;
+    }
+
+    /* corazones flotando */
+    .heart {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(1); opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+  </style>
 </head>
 <body>
-<h1 style="position: fixed; top: 10%; text-align: center;">¿Te Gustaría ir a cenar conmigo 😊?</h1>
-<button id="si">Sí</button>
-<button id="no">No</button>
+  <h1>¿Quieres ir a cenar conmigo? ❤️</h1>
+  
+  <button class="btn yes" id="yesBtn">Sí 🥰</button>
+  <button class="btn no" id="noBtn">No 😢</button>
 
-<!-- Cambia 'foto.jpg' por el nombre de tu imagen subida al repositorio -->
-<img id="foto" src="foto.jpg" alt="Foto juntos">
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
 
-<script>
-  const noBtn = document.getElementById('no');
-  const siBtn = document.getElementById('si');
-  const foto = document.getElementById('foto');
+    let yesScale = 1;
+    let noScale = 1;
 
-  let tamañoSi = 1; // Escala inicial del botón Sí
-  const tamañoMax = 5; // Tamaño máximo antes de mostrar la foto
+    noBtn.addEventListener("click", () => {
+      yesScale += 0.3; // SÍ crece
+      noScale -= 0.2;  // NO se achica
+      yesBtn.style.transform = `scale(${yesScale})`;
+      noBtn.style.transform = `scale(${noScale})`;
 
-  function crecerSi() {
-    if (tamañoSi < tamañoMax) {
-      tamañoSi += 0.5; // Crece más rápido cada vez
-      siBtn.style.transform = `translate(-50%, -50%) scale(${tamañoSi})`;
-    } else {
-      // Mostrar foto al alcanzar tamaño máximo
-      siBtn.style.display = 'none';
-      noBtn.style.display = 'none';
-      foto.style.display = 'block';
+      if (noScale <= 0.2) {
+        noBtn.style.display = "none"; // desaparece el NO
+      }
+    });
+
+    yesBtn.addEventListener("click", () => {
+      // 👉 cambia este link por la foto de ustedes
+      window.location.href = "https://tulink.com/foto-juntos.jpg";
+    });
+
+    // generar corazones
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 15 + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 6000);
     }
-  }
 
-  // Detecta toque o clic en No
-  noBtn.addEventListener('click', crecerSi);
-  noBtn.addEventListener('touchstart', crecerSi);
-
-  // Acción al presionar Sí
-  siBtn.addEventListener('click', () => {
-    alert('¡Yo sabia que inas a dexir que si! 😂😍');
-  });
-</script>
+    setInterval(createHeart, 500);
+  </script>
 </body>
 </html>
