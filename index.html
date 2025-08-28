@@ -41,7 +41,6 @@
       color: white;
     }
 
-    /* corazones flotando */
     .heart {
       position: absolute;
       color: rgba(255, 255, 255, 0.8);
@@ -69,22 +68,20 @@
     let noScale = 1;
 
     noBtn.addEventListener("click", () => {
-      yesScale += 0.3; // SÍ crece
-      noScale -= 0.2;  // NO se achica
+      yesScale += 0.3;
+      noScale -= 0.2;
       yesBtn.style.transform = `scale(${yesScale})`;
       noBtn.style.transform = `scale(${noScale})`;
 
       if (noScale <= 0.2) {
-        noBtn.style.display = "none"; // desaparece el NO
+        noBtn.style.display = "none";
       }
     });
 
     yesBtn.addEventListener("click", () => {
-      // 👉 cambia este link por la foto de ustedes
-      window.location.href = "https://imgur.com/a/9IkUaiB";
+      window.location.href = "index2.html"; // abre el segundo index romántico
     });
 
-    // generar corazones
     function createHeart() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
@@ -92,7 +89,6 @@
       heart.style.left = Math.random() * 100 + "vw";
       heart.style.fontSize = Math.random() * 20 + 15 + "px";
       document.body.appendChild(heart);
-
       setTimeout(() => heart.remove(), 6000);
     }
 
