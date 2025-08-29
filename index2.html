@@ -47,18 +47,17 @@
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      margin: 10px;
+      margin-top: 30px;
       background: #ff4d6d;
       color: white;
       transition: transform 0.3s ease;
-      position: relative;
     }
 
     .btn:hover {
       transform: scale(1.1);
     }
 
-    /* Popup */
+    /* Popup estilo */
     #videoPopup {
       display: none;
       position: fixed;
@@ -85,6 +84,7 @@
       cursor: pointer;
     }
 
+    /* Mensaje final */
     #finMessage {
       display: none;
       color: #fff;
@@ -100,11 +100,10 @@
   </style>
 </head>
 <body>
-  <h1>¿Quieres ver algo especial? ❤️</h1>
-  <button class="btn" id="btnSi">Sí 😍</button>
-  <button class="btn" id="btnNo">No 🙄</button>
+  <h1>8 años juntos ❤️ ¡Vamos a celebrarlo!</h1>
+  <button class="btn" id="openVideo">Dame Click ❤️🙂</button>
 
-  <!-- Popup -->
+  <!-- Popup video -->
   <div id="videoPopup">
     <button class="closeBtn" id="closePopup">&times;</button>
     <video id="myVideo" controls playsinline webkit-playsinline>
@@ -115,45 +114,27 @@
   </div>
 
   <script>
-    const btnSi = document.getElementById("btnSi");
-    const btnNo = document.getElementById("btnNo");
-    const videoPopup = document.getElementById("videoPopup");
+    const openVideo = document.getElementById("openVideo");
     const closePopup = document.getElementById("closePopup");
+    const videoPopup = document.getElementById("videoPopup");
     const video = document.getElementById("myVideo");
     const finMessage = document.getElementById("finMessage");
 
-    let siSize = 1;
-    let noSize = 1;
-
-    // Botón "Sí"
-    btnSi.addEventListener("click", () => {
+    // abrir popup
+    openVideo.addEventListener("click", () => {
       videoPopup.style.display = "flex";
-      finMessage.style.display = "none";
+      finMessage.style.display = "none"; // ocultar "Fin" al iniciar
       video.currentTime = 0;
       video.play();
     });
 
-    // Botón "No"
-    btnNo.addEventListener("click", () => {
-      // hacerlo más chico
-      noSize *= 0.8;
-      btnNo.style.transform = `scale(${noSize})`;
-
-      // mover a lugar aleatorio
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 50);
-      btnNo.style.position = "absolute";
-      btnNo.style.left = `${x}px`;
-      btnNo.style.top = `${y}px`;
-    });
-
-    // Cerrar popup
+    // cerrar popup
     closePopup.addEventListener("click", () => {
       videoPopup.style.display = "none";
       video.pause();
     });
 
-    // Mensaje al terminar el video
+    // cuando termina el video
     video.addEventListener("ended", () => {
       finMessage.style.display = "block";
     });
@@ -166,8 +147,10 @@
       heart.style.left = Math.random() * 100 + "vw";
       heart.style.fontSize = Math.random() * 20 + 15 + "px";
       document.body.appendChild(heart);
+
       setTimeout(() => heart.remove(), 6000);
     }
+
     setInterval(createHeart, 500);
   </script>
 </body>
