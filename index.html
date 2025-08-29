@@ -45,7 +45,7 @@
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      transition: transform 0.3s ease, font-size 0.3s ease, top 0.3s, left 0.3s;
+      transition: transform 0.3s ease;
       position: relative;
     }
 
@@ -87,43 +87,32 @@
 
     let yesScale = 1;
     let noScale = 1;
-    let noClicks = 0; 
-    const maxNoClicks = 5;
+    let angle = 0; // Ángulo para girar el botón NO
+    const radius = 60; // Distancia desde el centro del botón SÍ
 
     noBtn.addEventListener("click", () => {
-      noClicks++;
-
       // Crece el botón Sí
       yesScale += 0.3;
       yesBtn.style.transform = `scale(${yesScale})`;
 
       // Achica el botón No
-      noScale -= 0.15;
+      noScale -= 0.1;
       noBtn.style.transform = `scale(${noScale})`;
 
-      if (noClicks > 0 && noScale > 0.2) {
-        const btnWidth = noBtn.offsetWidth;
-        const btnHeight = noBtn.offsetHeight;
-        const margin = 10;
+      // Posición circular alrededor del botón Sí
+      const yesRect = yesBtn.getBoundingClientRect();
+      const centerX = yesRect.left + yesRect.width / 2;
+      const centerY = yesRect.top + yesRect.height / 2;
 
-        // Movimiento aleatorio pero limitado a pantalla
-        const maxX = window.innerWidth - btnWidth - margin;
-        const maxY = window.innerHeight - btnHeight - margin;
-        const minX = margin;
-        const minY = margin;
+      // Calcula nueva posición usando seno y coseno
+      const newX = centerX + radius * Math.cos(angle) - noBtn.offsetWidth / 2;
+      const newY = centerY + radius * Math.sin(angle) - noBtn.offsetHeight / 2;
 
-        const randomX = Math.random() * (maxX - minX) + minX;
-        const randomY = Math.random() * (maxY - minY) + minY;
+      noBtn.style.position = "absolute";
+      noBtn.style.left = newX + "px";
+      noBtn.style.top = newY + "px";
 
-        noBtn.style.position = "absolute";
-        noBtn.style.transition = "top 0.3s ease, left 0.3s ease";
-        noBtn.style.left = randomX + "px";
-        noBtn.style.top = randomY + "px";
-      }
-
-      if (noClicks >= maxNoClicks) {
-        noBtn.style.display = "none";
-      }
+      angle += Math.PI / 4; // incrementa ángulo para siguiente click
     });
 
     yesBtn.addEventListener("click", () => {
