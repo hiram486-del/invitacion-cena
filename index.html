@@ -12,6 +12,7 @@
       padding: 40px;
       overflow: hidden;
       height: 100vh;
+      position: relative;
     }
 
     h1 {
@@ -28,17 +29,22 @@
       border-radius: 12px;
       cursor: pointer;
       margin: 15px;
-      transition: transform 0.3s ease, font-size 0.3s ease;
+      transition: transform 0.3s ease, font-size 0.3s ease, top 0.3s, left 0.3s;
+      position: absolute;
     }
 
     .yes {
       background: #ff4d6d;
       color: white;
+      left: 40%;
+      top: 60%;
     }
 
     .no {
       background: #444;
       color: white;
+      left: 55%;
+      top: 60%;
     }
 
     .heart {
@@ -66,22 +72,37 @@
 
     let yesScale = 1;
     let noScale = 1;
+    let noClicks = 0; // contador de clics en NO
+    const maxNoClicks = 5; // límite de clics en NO
 
     noBtn.addEventListener("click", () => {
+      noClicks++;
+
+      // Aumenta el tamaño del botón Sí
       yesScale += 0.3;
-      noScale -= 0.2;
       yesBtn.style.transform = `scale(${yesScale})`;
+
+      // Reduce el tamaño del botón No
+      noScale -= 0.2;
       noBtn.style.transform = `scale(${noScale})`;
 
-      if (noScale <= 0.2) {
+      // Mueve el botón No a una posición aleatoria
+      const randomX = Math.random() * 80; 
+      const randomY = Math.random() * 80;
+      noBtn.style.left = randomX + "%";
+      noBtn.style.top = randomY + "%";
+
+      // Si llega al límite de clics, desaparece el botón NO
+      if (noClicks >= maxNoClicks) {
         noBtn.style.display = "none";
       }
     });
 
     yesBtn.addEventListener("click", () => {
-      window.location.href = "index2.html"; // abre el segundo index romántico
+      window.location.href = "index2.html"; 
     });
 
+    // corazones flotando
     function createHeart() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
