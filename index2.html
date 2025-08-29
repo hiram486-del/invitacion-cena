@@ -10,55 +10,153 @@
       background: linear-gradient(to bottom, #ff9a9e, #fecfef);
       text-align: center;
       overflow: hidden;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      position: relative;
+      padding: 20px;
     }
 
     h1 {
       font-size: 36px;
       color: #fff;
       text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      z-index: 2;
     }
 
     p {
       font-size: 24px;
       color: #fff;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      z-index: 2;
     }
-    
-    .photo {
-  width: 250px;          /* ancho de la foto */
-  height: 250px;         /* alto de la foto */
-  border-radius: 50%;    /* la hace redonda */
-  object-fit: cover;     /* recorta la foto si es rectangular */
-  border: 4px solid #fff; /* borde blanco */
-  margin: 20px 0;        /* separación del texto */
-  z-index: 2;            /* que quede encima de los corazones */
-}
 
+    .photo {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      margin: 20px 0;
+      z-index: 2;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 20px;
+      background: #ff4d6d;
+      color: white;
+      transition: transform 0.3s ease;
+      z-index: 2;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Popup video */
+    #videoPopup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    #videoPopup video {
+      width: 90%;
+      max-width: 600px;
+      border-radius: 12px;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      animation: heartbeat 2s infinite;
+    }
+
+    #videoPopup.show video {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .closeBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 28px;
+      color: #fff;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 15;
+    }
+
+    /* Corazones generales */
     .heart {
       position: absolute;
       color: rgba(255, 0, 100, 0.8);
       font-size: 20px;
       animation: floatUp 6s linear infinite;
+      z-index: 1;
+    }
+
+    /* Corazones en popup */
+    .popup-heart {
+      position: absolute;
+      color: rgba(255, 0, 100, 0.9);
+      font-size: 20px;
+      animation: floatUp 5s linear infinite;
+      z-index: 12;
     }
 
     @keyframes floatUp {
       0% { transform: translateY(100vh) scale(1); opacity: 1; }
       100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
     }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.03); }
+      50% { transform: scale(1.06); }
+      75% { transform: scale(1.03); }
+    }
+
+    @media (max-width: 500px) {
+      h1 { font-size: 28px; }
+      p { font-size: 18px; }
+      .photo { width: 180px; height: 180px; }
+    }
   </style>
 </head>
 <body>
   <h1>¡Feliz 8 años, mi amor! ❤️</h1>
-  <img src="foto-juntos.JPG" alt="Foto de nosotros" class="photo">
+  <img src="foto-juntos.jpg" alt="Foto de nosotros" class="photo">
   <p>Gracias por estos años maravillosos. Te amo 😘</p>
 
+  <!-- Botón para abrir popup de video -->
+  <button class="btn" id="videoBtn">Ver video 🎥</button>
+
+  <!-- Popup video -->
+  <div id="videoPopup">
+    <button class="closeBtn" id="closePopup">&times;</button>
+    <video controls>
+      <source src="video.mp4" type="video/mp4">
+      Tu navegador no soporta videos.
+    </video>
+  </div>
+
   <script>
+    // Corazones flotando en página principal
     function createHeart() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
@@ -68,8 +166,44 @@
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 6000);
     }
-
     setInterval(createHeart, 400);
+
+    // Corazones flotando en popup
+    function createPopupHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("popup-heart");
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 80 + "vw";
+      heart.style.top = Math.random() * 80 + "vh";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+
+    let popupHeartInterval;
+
+    // Popup video
+    const videoBtn = document.getElementById("videoBtn");
+    const videoPopup = document.getElementById("videoPopup");
+    const closePopup = document.getElementById("closePopup");
+    const video = videoPopup.querySelector("video");
+
+    videoBtn.addEventListener("click", () => {
+      videoPopup.style.display = "flex";
+      setTimeout(() => videoPopup.classList.add("show"), 10);
+      video.play();
+
+      // Inicia corazones flotando en popup
+      popupHeartInterval = setInterval(createPopupHeart, 300);
+    });
+
+    closePopup.addEventListener("click", () => {
+      videoPopup.classList.remove("show");
+      setTimeout(() => {
+        videoPopup.style.display = "none";
+        video.pause();
+        clearInterval(popupHeartInterval);
+      }, 500);
+    });
   </script>
 </body>
 </html>
