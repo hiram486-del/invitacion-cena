@@ -10,12 +10,13 @@
       background: linear-gradient(to bottom, #ff9a9e, #fecfef);
       text-align: center;
       overflow: hidden;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       position: relative;
+      padding: 20px;
     }
 
     h1 {
@@ -44,32 +45,22 @@
       z-index: 2;
     }
 
-    .heart {
+    .heart, .popup-heart, .final-heart {
       position: absolute;
-      color: rgba(255, 0, 100, 0.8);
       font-size: 20px;
-      animation: floatUp 6s linear infinite;
-      z-index: 1;
+      animation: floatUp linear infinite;
     }
+
+    .heart { color: rgba(255, 0, 100, 0.8); z-index:1; animation-duration: 6s;}
+    .popup-heart { color: rgba(255, 0, 100, 0.9); z-index:10; animation-duration: 4s;}
+    .final-heart { z-index:15; animation-duration: 5s;}
 
     @keyframes floatUp {
       0% { transform: translateY(100vh) scale(1); opacity: 1; }
       100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
     }
 
-    .video-container {
-      display: none;
-      margin-top: 20px;
-      z-index: 2;
-    }
-
-    video {
-      width: 90%;
-      max-width: 400px;
-      border-radius: 15px;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
-    }
-
+    /* Botón video */
     .btn-video {
       padding: 10px 20px;
       background-color: #ff4d6d;
@@ -80,13 +71,30 @@
       cursor: pointer;
       transition: 0.3s;
       z-index: 2;
+      margin-bottom: 15px;
     }
 
-    .btn-video:hover {
-      background-color: #e63956;
-      transform: scale(1.05);
+    .btn-video:hover { background-color: #e63956; transform: scale(1.05); }
+
+    /* Contenedor del video */
+    .video-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      z-index: 2;
     }
 
+    video {
+      width: 90%;
+      max-width: 400px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+      z-index: 5;
+    }
+
+    /* Texto Fin y mensaje flotante */
     .fin {
       display: none;
       margin-top: 20px;
@@ -96,6 +104,30 @@
       text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
       z-index: 2;
     }
+
+    .mensaje-final {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      font-size: 26px;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      animation: subirMensaje 5s linear forwards;
+      z-index: 20;
+    }
+
+    @keyframes subirMensaje {
+      0% { transform: translateY(0); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translateY(-50vh); opacity: 1; }
+    }
+
+    @media (max-width: 500px) {
+      h1 { font-size: 28px; }
+      p { font-size: 18px; }
+      .photo { width: 180px; height: 180px; }
+      video { max-width: 300px; }
+    }
   </style>
 </head>
 <body>
@@ -103,10 +135,8 @@
   <img src="foto-juntos.JPG" alt="Foto de nosotros" class="photo">
   <p>Gracias por estos años maravillosos. Te amo 😘</p>
 
-  <!-- Botón para mostrar el video -->
   <button class="btn-video" onclick="mostrarVideo()">Da click Aqui ❤️</button>
 
-  <!-- Contenedor del video -->
   <div class="video-container" id="videoContainer">
     <video id="miVideo" controls playsinline>
       <source src="video.mp4" type="video/mp4">
@@ -114,11 +144,11 @@
     </video>
   </div>
 
-  <!-- Texto de Fin -->
   <div class="fin" id="finTexto">Fin ❤️</div>
+  <div class="mensaje-final" id="mensajeFinal">Te amo 😘</div>
 
   <script>
-    // Corazones flotando
+    // Corazones flotando en página principal
     function createHeart() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
@@ -130,16 +160,49 @@
     }
     setInterval(createHeart, 400);
 
-    // Mostrar video
+    const videoContainer = document.getElementById("videoContainer");
+    const video = document.getElementById("miVideo");
+    let popupHeartInterval;
+
     function mostrarVideo() {
-      document.getElementById("videoContainer").style.display = "block";
       document.querySelector(".btn-video").style.display = "none";
+      videoContainer.style.display = "flex";
+      video.scrollIntoView({behavior:"smooth", block:"center"});
+      video.play();
+
+      // Corazones sobre el video
+      popupHeartInterval = setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("popup-heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 80 + "vw";
+        heart.style.top = Math.random() * 60 + "vh";
+        heart.style.fontSize = Math.random() * 30 + 15 + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+      }, 250);
     }
 
-    // Mostrar "Fin ❤️" al terminar
-    const video = document.getElementById("miVideo");
     video.addEventListener("ended", () => {
       document.getElementById("finTexto").style.display = "block";
+      document.getElementById("mensajeFinal").style.display = "block";
+      clearInterval(popupHeartInterval);
+
+      // Cielo de corazones finales multicolor
+      const colors = ['#ff4d6d','#ff69b4','#ffb6c1','#ff1493','#ff8080'];
+      let finalHearts = 0;
+      const finalHeartInterval = setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("final-heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = Math.random() * 35 + 25 + "px";
+        heart.style.color = colors[Math.floor(Math.random()*colors.length)];
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+        finalHearts++;
+        if(finalHearts > 40) clearInterval(finalHeartInterval);
+      }, 150);
     });
   </script>
 </body>
