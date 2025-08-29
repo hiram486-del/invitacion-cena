@@ -16,11 +16,19 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
     }
 
     h1 {
       color: #fff;
       font-size: 28px;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      color: #fff;
+      font-size: 24px;
       margin-bottom: 50px;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
@@ -65,7 +73,8 @@
   </style>
 </head>
 <body>
-  <h1>¿Te gustaria ir a cenar mañana conmigo? ❤️</h1>
+  <h1>Feliz 8 años, amor ❤️</h1>
+  <h2>¿Quieres ir a cenar conmigo? 🥰</h2>
   
   <div class="btn-container">
     <button class="btn yes" id="yesBtn">Sí 🥰</button>
@@ -84,36 +93,37 @@
     noBtn.addEventListener("click", () => {
       noClicks++;
 
-      // Aumenta el tamaño del botón Sí
+      // Crece el botón Sí
       yesScale += 0.3;
       yesBtn.style.transform = `scale(${yesScale})`;
 
-      // Reduce el tamaño del botón No
+      // Achica el botón No
       noScale -= 0.2;
       noBtn.style.transform = `scale(${noScale})`;
 
-      // Mueve el botón No a una posición aleatoria dentro de la pantalla
       if (noClicks > 0) {
         const btnWidth = noBtn.offsetWidth;
         const btnHeight = noBtn.offsetHeight;
-        const margin = 20;
+        const margin = 10;
 
-        // Genera posición aleatoria dentro de la pantalla con rebote
+        // Posición aleatoria
         let randomX = Math.random() * (window.innerWidth - btnWidth - margin*2) + margin;
         let randomY = Math.random() * (window.innerHeight - btnHeight - margin*2) + margin;
 
-        // Rebote: si la posición se acerca demasiado a los bordes, ajusta ligeramente
-        if(randomX < margin) randomX = margin + 10;
-        if(randomX > window.innerWidth - btnWidth - margin) randomX = window.innerWidth - btnWidth - margin - 10;
-        if(randomY < margin) randomY = margin + 10;
-        if(randomY > window.innerHeight - btnHeight - margin) randomY = window.innerHeight - btnHeight - margin - 10;
+        // Rebote si toca los bordes
+        if(randomX < margin) randomX = margin + Math.random() * 30;
+        if(randomX > window.innerWidth - btnWidth - margin) randomX = window.innerWidth - btnWidth - margin - Math.random() * 30;
+        if(randomY < margin) randomY = margin + Math.random() * 30;
+        if(randomY > window.innerHeight - btnHeight - margin) randomY = window.innerHeight - btnHeight - margin - Math.random() * 30;
 
         noBtn.style.position = "absolute";
+
+        // Animación suave hacia la nueva posición
+        noBtn.style.transition = "top 0.4s ease, left 0.4s ease";
         noBtn.style.left = randomX + "px";
         noBtn.style.top = randomY + "px";
       }
 
-      // Si llega al límite de clics, desaparece el botón NO
       if (noClicks >= maxNoClicks) {
         noBtn.style.display = "none";
       }
@@ -123,7 +133,7 @@
       window.location.href = "index2.html"; 
     });
 
-    // corazones flotando
+    // Corazones flotando
     function createHeart() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
