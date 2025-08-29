@@ -98,27 +98,22 @@
       yesBtn.style.transform = `scale(${yesScale})`;
 
       // Achica el botón No
-      noScale -= 0.2;
+      noScale -= 0.15;
       noBtn.style.transform = `scale(${noScale})`;
 
-      if (noClicks > 0) {
+      if (noClicks > 0 && noScale > 0.2) {
         const btnWidth = noBtn.offsetWidth;
         const btnHeight = noBtn.offsetHeight;
-        const margin = 10;
+        const margin = 20; // margen desde bordes
 
-        // Posición aleatoria
-        let randomX = Math.random() * (window.innerWidth - btnWidth - margin*2) + margin;
-        let randomY = Math.random() * (window.innerHeight - btnHeight - margin*2) + margin;
+        // Limitar movimiento dentro de la ventana
+        const maxX = window.innerWidth - btnWidth - margin;
+        const maxY = window.innerHeight - btnHeight - margin;
 
-        // Rebote si toca los bordes
-        if(randomX < margin) randomX = margin + Math.random() * 30;
-        if(randomX > window.innerWidth - btnWidth - margin) randomX = window.innerWidth - btnWidth - margin - Math.random() * 30;
-        if(randomY < margin) randomY = margin + Math.random() * 30;
-        if(randomY > window.innerHeight - btnHeight - margin) randomY = window.innerHeight - btnHeight - margin - Math.random() * 30;
+        let randomX = Math.random() * (maxX - margin) + margin;
+        let randomY = Math.random() * (maxY - margin) + margin;
 
         noBtn.style.position = "absolute";
-
-        // Animación suave hacia la nueva posición
         noBtn.style.transition = "top 0.4s ease, left 0.4s ease";
         noBtn.style.left = randomX + "px";
         noBtn.style.top = randomY + "px";
