@@ -66,9 +66,29 @@
       animation: floatUp 6s linear infinite;
     }
 
+    #mensaje {
+      display: none;
+      margin-top: 20px;
+      font-size: 24px;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      animation: floatIn 1s ease forwards, blink 1.5s infinite;
+      position: relative;
+    }
+
     @keyframes floatUp {
       0% { transform: translateY(100vh) scale(1); opacity: 1; }
       100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+
+    @keyframes floatIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0.6; }
     }
   </style>
 </head>
@@ -81,14 +101,16 @@
     <button class="btn no" id="noBtn">No 😢</button>
   </div>
 
+  <div id="mensaje">¡Sabía que dirías que sí! 😘</div>
+
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
+    const mensaje = document.getElementById("mensaje");
 
     let yesScale = 1;
     let noScale = 1;
-    let angle = 0; // Ángulo para girar el botón NO
-    const radius = 60; // Distancia desde el centro del botón SÍ
+    const minNoScale = 0.2;
 
     noBtn.addEventListener("click", () => {
       // Crece el botón Sí
@@ -96,30 +118,21 @@
       yesBtn.style.transform = `scale(${yesScale})`;
 
       // Achica el botón No
-      noScale -= 0.1;
-      noBtn.style.transform = `scale(${noScale})`;
-
-      // Posición circular alrededor del botón Sí
-      const yesRect = yesBtn.getBoundingClientRect();
-      const centerX = yesRect.left + yesRect.width / 2;
-      const centerY = yesRect.top + yesRect.height / 2;
-
-      // Calcula nueva posición usando seno y coseno
-      const newX = centerX + radius * Math.cos(angle) - noBtn.offsetWidth / 2;
-      const newY = centerY + radius * Math.sin(angle) - noBtn.offsetHeight / 2;
-
-      noBtn.style.position = "absolute";
-      noBtn.style.left = newX + "px";
-      noBtn.style.top = newY + "px";
-
-      angle += Math.PI / 4; // incrementa ángulo para siguiente click
+      noScale -= 0.15;
+      if (noScale <= minNoScale) {
+        noBtn.style.display = "none"; // desaparece cuando es muy pequeño
+        mensaje.style.display = "block"; // aparece el mensaje travieso
+        startMensajeHearts(); // empieza a crear corazones alrededor del mensaje
+      } else {
+        noBtn.style.transform = `scale(${noScale})`;
+      }
     });
 
     yesBtn.addEventListener("click", () => {
       window.location.href = "index2.html"; 
     });
 
-    // Corazones flotando
+    // Corazones flotando por toda la pantalla
     function createHeart() {
       const heart = document.createElement("div");
       heart.classList.add("heart");
@@ -129,8 +142,26 @@
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 6000);
     }
-
     setInterval(createHeart, 500);
+
+    // Corazones flotando alrededor del mensaje
+    function createMensajeHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤️";
+      // Posición alrededor del mensaje
+      const rect = mensaje.getBoundingClientRect();
+      heart.style.left = rect.left + rect.width/2 + (Math.random()*100-50) + "px";
+      heart.style.top = rect.top + (Math.random()*50-25) + "px";
+      heart.style.fontSize = Math.random()*15 + 10 + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 4000);
+    }
+
+    let mensajeHeartsInterval;
+    function startMensajeHearts() {
+      mensajeHeartsInterval = setInterval(createMensajeHeart, 300);
+    }
   </script>
 </body>
 </html>
