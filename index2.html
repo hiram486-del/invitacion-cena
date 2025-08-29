@@ -3,90 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nuestra Cita</title>
+  <title>Feliz 8 años ❤️</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #ffe6eb;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #ff9a9e, #fecfef);
       text-align: center;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
     }
+
     h1 {
-      color: #d6336c;
-      margin-bottom: 20px;
+      font-size: 36px;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+      z-index: 2;
     }
-    img {
-      max-width: 90%;
-      height: auto;
-      border-radius: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-    }
+
     p {
-      font-size: 20px;
-      color: #444;
+      font-size: 22px;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
       margin-bottom: 20px;
+      z-index: 2;
     }
-    button {
-      padding: 12px 24px;
-      font-size: 18px;
+
+    .photo {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      margin: 15px 0;
+      z-index: 2;
+    }
+
+    .heart {
+      position: absolute;
+      color: rgba(255, 0, 100, 0.8);
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(1); opacity: 1; }
+      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+    }
+
+    .video-container {
+      display: none;
+      margin-top: 20px;
+      z-index: 2;
+    }
+
+    video {
+      width: 90%;
+      max-width: 400px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .btn-video {
+      padding: 10px 20px;
+      background-color: #ff4d6d;
+      color: #fff;
       border: none;
       border-radius: 10px;
+      font-size: 18px;
       cursor: pointer;
-      background-color: #ff4d6d;
+      transition: 0.3s;
+      z-index: 2;
+    }
+
+    .btn-video:hover {
+      background-color: #e63956;
+      transform: scale(1.05);
+    }
+
+    .fin {
+      display: none;
+      margin-top: 20px;
+      font-size: 28px;
+      font-weight: bold;
       color: white;
-      margin-top: 10px;
-      transition: all 0.3s ease;
-    }
-    button:hover {
-      background-color: #d6336c;
-    }
-    video {
-      max-width: 90%;
-      margin-top: 20px;
-      border-radius: 15px;
-      display: none;
-    }
-    #fin {
-      margin-top: 20px;
-      font-size: 22px;
-      color: #d6336c;
-      display: none;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+      z-index: 2;
     }
   </style>
 </head>
 <body>
-  <h1>Gracias por decir que sí 💖</h1>
-  <img src="foto-juntos.JPG" alt="Nuestra foto">
-  
-  <p>Eres mi persona favorita y quiero seguir compartiendo mi vida contigo ❤️</p>
-  
-  <button id="verVideo">Ver video 🎥</button>
-  
-  <video id="video" controls>
-    <source src="video.mp4" type="video/mp4">
-    Tu navegador no soporta el video.
-  </video>
+  <h1>¡Feliz 8 años, mi amor! ❤️</h1>
+  <img src="foto-juntos.jpg" alt="Foto de nosotros" class="photo">
+  <p>Gracias por estos años maravillosos. Te amo 😘</p>
 
-  <div id="fin">Fin 💕</div>
+  <!-- Botón para mostrar el video -->
+  <button class="btn-video" onclick="mostrarVideo()">Ver video 🎥</button>
+
+  <!-- Contenedor del video -->
+  <div class="video-container" id="videoContainer">
+    <video id="miVideo" controls playsinline>
+      <source src="video.mp4" type="video/mp4">
+      Tu navegador no soporta videos.
+    </video>
+  </div>
+
+  <!-- Texto de Fin -->
+  <div class="fin" id="finTexto">Fin ❤️</div>
 
   <script>
-    const btn = document.getElementById("verVideo");
-    const video = document.getElementById("video");
-    const fin = document.getElementById("fin");
+    // Corazones flotando
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 30 + 20 + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 400);
 
-    btn.addEventListener("click", () => {
-      video.style.display = "block";
-      btn.style.display = "none";
-      video.play();
-    });
+    // Mostrar video
+    function mostrarVideo() {
+      document.getElementById("videoContainer").style.display = "block";
+      document.querySelector(".btn-video").style.display = "none";
+    }
 
+    // Mostrar "Fin ❤️" al terminar
+    const video = document.getElementById("miVideo");
     video.addEventListener("ended", () => {
-      fin.style.display = "block";
+      document.getElementById("finTexto").style.display = "block";
     });
   </script>
 </body>
