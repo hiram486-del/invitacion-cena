@@ -12,7 +12,10 @@
       padding: 40px;
       overflow: hidden;
       height: 100vh;
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     h1 {
@@ -22,29 +25,30 @@
       text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
 
+    .btn-container {
+      display: flex;
+      gap: 30px;
+      position: relative;
+    }
+
     .btn {
       padding: 15px 30px;
       font-size: 20px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      margin: 15px;
       transition: transform 0.3s ease, font-size 0.3s ease, top 0.3s, left 0.3s;
-      position: absolute;
+      position: relative;
     }
 
     .yes {
       background: #ff4d6d;
       color: white;
-      left: 40%;
-      top: 60%;
     }
 
     .no {
       background: #444;
       color: white;
-      left: 55%;
-      top: 60%;
     }
 
     .heart {
@@ -63,8 +67,10 @@
 <body>
   <h1>¿Quieres ir a cenar conmigo? ❤️</h1>
   
-  <button class="btn yes" id="yesBtn">Sí 🥰</button>
-  <button class="btn no" id="noBtn">No 😢</button>
+  <div class="btn-container">
+    <button class="btn yes" id="yesBtn">Sí 🥰</button>
+    <button class="btn no" id="noBtn">No 😢</button>
+  </div>
 
   <script>
     const yesBtn = document.getElementById("yesBtn");
@@ -72,8 +78,8 @@
 
     let yesScale = 1;
     let noScale = 1;
-    let noClicks = 0; // contador de clics en NO
-    const maxNoClicks = 5; // límite de clics en NO
+    let noClicks = 0; 
+    const maxNoClicks = 5;
 
     noBtn.addEventListener("click", () => {
       noClicks++;
@@ -86,11 +92,26 @@
       noScale -= 0.2;
       noBtn.style.transform = `scale(${noScale})`;
 
-      // Mueve el botón No a una posición aleatoria
-      const randomX = Math.random() * 80; 
-      const randomY = Math.random() * 80;
-      noBtn.style.left = randomX + "%";
-      noBtn.style.top = randomY + "%";
+      // Mueve el botón No a una posición aleatoria dentro de la pantalla
+      if (noClicks > 0) {
+        const btnWidth = noBtn.offsetWidth;
+        const btnHeight = noBtn.offsetHeight;
+        const margin = 20;
+
+        // Genera posición aleatoria dentro de la pantalla con rebote
+        let randomX = Math.random() * (window.innerWidth - btnWidth - margin*2) + margin;
+        let randomY = Math.random() * (window.innerHeight - btnHeight - margin*2) + margin;
+
+        // Rebote: si la posición se acerca demasiado a los bordes, ajusta ligeramente
+        if(randomX < margin) randomX = margin + 10;
+        if(randomX > window.innerWidth - btnWidth - margin) randomX = window.innerWidth - btnWidth - margin - 10;
+        if(randomY < margin) randomY = margin + 10;
+        if(randomY > window.innerHeight - btnHeight - margin) randomY = window.innerHeight - btnHeight - margin - 10;
+
+        noBtn.style.position = "absolute";
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+      }
 
       // Si llega al límite de clics, desaparece el botón NO
       if (noClicks >= maxNoClicks) {
