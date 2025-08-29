@@ -104,17 +104,19 @@
       if (noClicks > 0 && noScale > 0.2) {
         const btnWidth = noBtn.offsetWidth;
         const btnHeight = noBtn.offsetHeight;
-        const margin = 20; // margen desde bordes
+        const margin = 10;
 
-        // Limitar movimiento dentro de la ventana
+        // Movimiento aleatorio pero limitado a pantalla
         const maxX = window.innerWidth - btnWidth - margin;
         const maxY = window.innerHeight - btnHeight - margin;
+        const minX = margin;
+        const minY = margin;
 
-        let randomX = Math.random() * (maxX - margin) + margin;
-        let randomY = Math.random() * (maxY - margin) + margin;
+        const randomX = Math.random() * (maxX - minX) + minX;
+        const randomY = Math.random() * (maxY - minY) + minY;
 
         noBtn.style.position = "absolute";
-        noBtn.style.transition = "top 0.4s ease, left 0.4s ease";
+        noBtn.style.transition = "top 0.3s ease, left 0.3s ease";
         noBtn.style.left = randomX + "px";
         noBtn.style.top = randomY + "px";
       }
