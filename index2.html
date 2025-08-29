@@ -3,155 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nuestra Cena ❤️</title>
+  <title>Nuestra Cita</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(to bottom, #ffdde1, #ee9ca7);
+      font-family: Arial, sans-serif;
+      background-color: #ffe6eb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
       text-align: center;
-      padding: 40px;
-      overflow: hidden;
-      height: 100vh;
-      position: relative;
     }
-
     h1 {
-      color: #fff;
-      font-size: 28px;
-      margin-bottom: 30px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-      animation: pulse 2s infinite;
+      color: #d6336c;
+      margin-bottom: 20px;
     }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
+    img {
+      max-width: 90%;
+      height: auto;
+      border-radius: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
     }
-
-    .heart {
-      position: absolute;
-      color: rgba(255, 255, 255, 0.8);
+    p {
       font-size: 20px;
-      animation: floatUp 6s linear infinite;
+      color: #444;
+      margin-bottom: 20px;
     }
-
-    @keyframes floatUp {
-      0% { transform: translateY(100vh) scale(1); opacity: 1; }
-      100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
-    }
-
-    .btn {
-      padding: 12px 25px;
+    button {
+      padding: 12px 24px;
       font-size: 18px;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 30px;
-      background: #ff4d6d;
+      background-color: #ff4d6d;
       color: white;
-      transition: transform 0.3s ease;
+      margin-top: 10px;
+      transition: all 0.3s ease;
     }
-
-    .btn:hover {
-      transform: scale(1.1);
+    button:hover {
+      background-color: #d6336c;
     }
-
-    /* Popup estilo */
-    #videoPopup {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    #videoPopup video {
-      width: 90%;
-      max-width: 500px;
-      border-radius: 12px;
-    }
-
-    .closeBtn {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 30px;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Mensaje final */
-    #finMessage {
-      display: none;
-      color: #fff;
-      font-size: 26px;
+    video {
+      max-width: 90%;
       margin-top: 20px;
-      animation: fadeIn 2s forwards;
+      border-radius: 15px;
+      display: none;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    #fin {
+      margin-top: 20px;
+      font-size: 22px;
+      color: #d6336c;
+      display: none;
     }
   </style>
 </head>
 <body>
-  <h1>8 años juntos ❤️ ¡Vamos a celebrarlo!</h1>
-  <button class="btn" id="openVideo">Dame Click ❤️🙂</button>
+  <h1>Gracias por decir que sí 💖</h1>
+  <img src="foto-juntos.JPG" alt="Nuestra foto">
+  
+  <p>Eres mi persona favorita y quiero seguir compartiendo mi vida contigo ❤️</p>
+  
+  <button id="verVideo">Ver video 🎥</button>
+  
+  <video id="video" controls>
+    <source src="video.mp4" type="video/mp4">
+    Tu navegador no soporta el video.
+  </video>
 
-  <!-- Popup video -->
-  <div id="videoPopup">
-    <button class="closeBtn" id="closePopup">&times;</button>
-    <video id="myVideo" controls playsinline webkit-playsinline>
-      <source src="video.mp4" type="video/mp4">
-      Tu navegador no soporta videos.
-    </video>
-    <div id="finMessage">Fin ❤️</div>
-  </div>
+  <div id="fin">Fin 💕</div>
 
   <script>
-    const openVideo = document.getElementById("openVideo");
-    const closePopup = document.getElementById("closePopup");
-    const videoPopup = document.getElementById("videoPopup");
-    const video = document.getElementById("myVideo");
-    const finMessage = document.getElementById("finMessage");
+    const btn = document.getElementById("verVideo");
+    const video = document.getElementById("video");
+    const fin = document.getElementById("fin");
 
-    // abrir popup
-    openVideo.addEventListener("click", () => {
-      videoPopup.style.display = "flex";
-      finMessage.style.display = "none"; // ocultar "Fin" al iniciar
-      video.currentTime = 0;
+    btn.addEventListener("click", () => {
+      video.style.display = "block";
+      btn.style.display = "none";
       video.play();
     });
 
-    // cerrar popup
-    closePopup.addEventListener("click", () => {
-      videoPopup.style.display = "none";
-      video.pause();
-    });
-
-    // cuando termina el video
     video.addEventListener("ended", () => {
-      finMessage.style.display = "block";
+      fin.style.display = "block";
     });
-
-    // corazones animados
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.innerHTML = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = Math.random() * 20 + 15 + "px";
-      document.body.appendChild(heart);
-
-      setTimeout(() => heart.remove(), 6000);
-    }
-
-    setInterval(createHeart, 500);
   </script>
 </body>
 </html>
